@@ -14,7 +14,7 @@ public class PartcipantService {
     }
 
     public Participant addParticipant(Participant participant) {
-        return partcipantRepository.save(participant);
+        return partcipantRepository.saveAndFlush(participant);
     }
 
 

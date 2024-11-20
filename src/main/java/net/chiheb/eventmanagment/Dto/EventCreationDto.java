@@ -2,14 +2,16 @@ package net.chiheb.eventmanagment.Dto;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import net.chiheb.eventmanagment.Entity.Category;
 import net.chiheb.eventmanagment.Entity.Organizator;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class EventCreationDto {
     private String title;

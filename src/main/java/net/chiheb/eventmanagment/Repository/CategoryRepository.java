@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
     @EntityGraph(attributePaths = {"events"})
-    Category findAllByCategoryId(Long id);
+    Category findByCategoryId(Long id);
 }

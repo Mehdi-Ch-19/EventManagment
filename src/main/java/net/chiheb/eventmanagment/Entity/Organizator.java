@@ -1,5 +1,6 @@
 package net.chiheb.eventmanagment.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,6 @@ public class Organizator extends User{
     private String phoneNumber;
     private String website;
     @OneToMany(mappedBy = "organizator",cascade = {CascadeType.PERSIST,CascadeType.MERGE},fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Event> eventSet = new HashSet<>();
 }

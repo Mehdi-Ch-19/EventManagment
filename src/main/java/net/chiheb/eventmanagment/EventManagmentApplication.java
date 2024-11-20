@@ -5,6 +5,7 @@ import net.chiheb.eventmanagment.Entity.Category;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.Organizator;
 import net.chiheb.eventmanagment.Entity.Participant;
+import net.chiheb.eventmanagment.Repository.EventRepository;
 import net.chiheb.eventmanagment.Service.CategoryService;
 import net.chiheb.eventmanagment.Service.EventService;
 import net.chiheb.eventmanagment.Service.OrganizatorService;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class EventManagmentApplication {
@@ -26,16 +28,31 @@ public class EventManagmentApplication {
     CommandLineRunner start(CategoryService categoryService,
                             OrganizatorService organizatorService,
                             PartcipantService partcipantService,
+                            EventRepository eventRepository,
                             EventService eventService){
         return args -> {
             Participant participant = new Participant();
-            participant.setEmail("jiko@gjha.com");
-            participant.setName("said");
-            participant.setPassword("ssvv255");
+            participant.setEmail("x");
+            participant.setName("x");
+            participant.setPassword("x");
+
+            Participant participant2 = new Participant();
+            participant2.setEmail("x");
+            participant2.setName("x");
+            participant2.setPassword("x");
+
+            Participant participant3 = new Participant();
+            participant3.setEmail("x");
+            participant3.setName("x");
+            participant3.setPassword("x");
+
             partcipantService.addParticipant(participant);
-            Category category = Category.builder()
-                    .events(new ArrayList<>())
-                    .categoryName("music").build();
+            partcipantService.addParticipant(participant2);
+            partcipantService.addParticipant(participant3);
+
+
+            Category category =new Category();
+            category.setCategoryName("music");
             Category category1 = categoryService.createCategoty(category);
             Category category2 = categoryService.getCategoryById(1L);
             Organizator organizator = new Organizator();
@@ -45,22 +62,49 @@ public class EventManagmentApplication {
             organizator.setEmail("mehdi@gmail.com");
             organizator.setPassword("kaiahhbs");
             Organizator organizator1 = organizatorService.createOrganizator(organizator);
-            EventCreationDto event = EventCreationDto.builder()
+            EventCreationDto event = new EventCreationDto();
+            event.setTitle("mazazin");
+            event.setCategory(category);
+            event.setOrganizator(organizator);
+            event.setDescription("20 eduthion du mazain");
+            event.setMaxCapacity(2);
+            event.setDate(LocalDate.now());
+            Event newevent = Event.builder()
                     .title("mazazin")
-                    .date(LocalDate.now())
-                    .MaxCapacity(500)
-                    .description("20 eduthion du mazain")
-                    .category(category2)
-                    .organizator(organizator1)
-                    .build();
-            Event newevent = Event.builder().title("mazazin")
                     .date(LocalDate.now())
                     .MaxCapacity(500)
                     .description("20 eduthion du mazain")
                     .category(category1)
                     .organizator(organizator1)
                     .build();
+            //organizator1.getEventSet().add(newevent);
+            //organizator1.getEventSet().add(newevent);
+            //category1.getEvents().add(newevent);
+            //System.out.println(organizator1.getEventSet().size());
+
             Event event1 = eventService.createEvent(event);
+            //organizator1.getEventSet().add(newevent);
+            //System.out.println(organizatorService.getOrganizatorEvents(organizator1).size());
+            //System.out.println(categoryService.getalleventsbycategory(category1).size());
+            //System.out.println(participant2.getParticipantId());
+           // eventService.addParticipantToEvent(event1,participant);
+            //Participant p2 = new Participant();
+            //partcipantService.addParticipant(p2);
+           // eventService.addParticipantToEvent(event1,participant3);
+            /*event1.getParticipants().add(participant3);
+            participant3.getEventList().add(event1);
+            eventRepository.saveAndFlush(event1);
+            event1.getParticipants().add(participant2);
+            participant2.getEventList().add(event1);
+            System.out.println(event1.getParticipants());
+            eventRepository.saveAndFlush(event1);*/
+           // eventRepository.save(event1);
+            //eventService.addParticipantToEvent(event1,p2);
+            //System.out.println(category1.getEvents().size());
+            //System.out.println(event1.getParticipants().size());
+            /*System.out.println("gggg");
+            System.out.println(organizatorService.getOrganizatorEvents(organizator).size());*/
+            /*
             //category1.getEvents().add(event1);
 
             event1.setLocation("new location");
@@ -79,7 +123,7 @@ public class EventManagmentApplication {
             //System.out.println(e2.getParticipants().size());
             eventService.addParticipantToEvent(event1, participant);
             System.out.println(event1.getParticipants().size());
-            System.out.println(category1.getEvents().size());
+            System.out.println(category1.getEvents().size());*/
         };
     }
     public static void main(String[] args) {

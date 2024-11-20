@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -26,9 +27,9 @@ public class CategoryService {
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
-    @jakarta.transaction.Transactional
-    public List<Event> getalleventsbycategory(Long id){
-        Category category = categoryRepository.findAllByCategoryId(id);
+    @Transactional
+    public Set<Event> getalleventsbycategory(Category cat){
+        Category category = categoryRepository.findByCategoryId(cat.getCategoryId());
         return category.getEvents();
     }
 

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,16 +31,15 @@ public class Event {
     private Organizator organizator;
     @ManyToOne
     @JoinColumn(name = "category")
-    @JsonBackReference
+    //@JsonBackReference
     private Category category;
-
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(
             name = "event_participants",
-            joinColumns = @JoinColumn(name = "eventid",referencedColumnName = "eventid"),
-            inverseJoinColumns = @JoinColumn(name = "participantId",referencedColumnName = "participantId")
+            joinColumns = @JoinColumn(name = "eventid"),
+            inverseJoinColumns = @JoinColumn(name = "participantId")
     )
-    private Set<Participant> participants = new HashSet<>();
+    private List<Participant> participants = new ArrayList<>();
 
     public void addParticipant(Participant participant) {
         this.getParticipants().add(participant);

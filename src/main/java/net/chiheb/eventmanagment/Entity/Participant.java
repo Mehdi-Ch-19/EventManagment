@@ -1,5 +1,6 @@
 package net.chiheb.eventmanagment.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Participant extends User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long participantId;
     @ManyToMany(mappedBy = "participants")
+    @JsonIgnore
     private Set<Event> eventList = new HashSet<>();
 
 }
