@@ -32,17 +32,17 @@ public class EventManagmentApplication {
                             EventService eventService){
         return args -> {
             Participant participant = new Participant();
-            participant.setEmail("x");
+            participant.setEmail("x1");
             participant.setName("x");
             participant.setPassword("x");
 
             Participant participant2 = new Participant();
-            participant2.setEmail("x");
+            participant2.setEmail("x2");
             participant2.setName("x");
             participant2.setPassword("x");
 
             Participant participant3 = new Participant();
-            participant3.setEmail("x");
+            participant3.setEmail("x3");
             participant3.setName("x");
             participant3.setPassword("x");
 

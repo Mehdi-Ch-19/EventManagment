@@ -3,9 +3,10 @@ package net.chiheb.eventmanagment.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Builder
@@ -15,12 +16,15 @@ import java.util.Set;
 @Setter
 @ToString
 public class Organizator extends User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long organizatorId;
+
     private String phoneNumber;
     private String website;
     @OneToMany(mappedBy = "organizator",cascade = {CascadeType.PERSIST,CascadeType.MERGE},fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Event> eventSet = new HashSet<>();
+    private List<Event> eventSet = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ORGANIZATOR"));
+    }
 }

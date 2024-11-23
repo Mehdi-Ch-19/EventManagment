@@ -54,15 +54,15 @@ public class EventService {
         System.out.println(event.getParticipants().size());
         if(checkifcapacityenough(event)){
             //System.out.println(event.getParticipants());
-            /*if(checkifparticipantexistsonevent(event,participant)){
+            if(checkifparticipantexistsonevent(event,participant)){
                 System.out.println("Participant already exists");
                 throw new AleardyEnrolled("aleady enrollred");
-            }else {*/
+            }else {
                 //System.out.println(event);
                 event.getParticipants().add(participant);
                 participant.getEventList().add(event);
                 eventRepository.saveAndFlush(event);
-           /* }*/
+            }
 
         }else {
             lisAttenteService.addParticipantToWaitingListofEvent(participant,event);
@@ -77,7 +77,7 @@ public class EventService {
         List<Participant> participants = event.getParticipants();
         AtomicBoolean exist = new AtomicBoolean(false);
         participants.forEach(participant1 -> {
-            if(Objects.equals(participant1.getParticipantId(), participant.getParticipantId())){
+            if(Objects.equals(participant1.getId(), participant.getId())){
                 exist.set(true);
             }
         });

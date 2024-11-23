@@ -3,6 +3,7 @@ package net.chiheb.eventmanagment.Controller;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.Participant;
 import net.chiheb.eventmanagment.Service.EventService;
+import net.chiheb.eventmanagment.config.ResponceHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +19,15 @@ public class EventController {
     }
 
     @PostMapping("/{eventid}/enrolle")
-    private ResponseEntity<Event> addParticipantToEvent(@PathVariable Long eventid,
+    private ResponseEntity<?> addParticipantToEvent(@PathVariable Long eventid,
                                                         @RequestBody Participant participant) {
         try {
             eventService.addParticipantToEvent(eventid,participant);
             Event event1 = eventService.getEventById(eventid).get();
-            return new ResponseEntity<>(event1, HttpStatus.OK);
+            return  ResponceHandler.generateResponse("Participant added successfuly to " + event1.getTitle(), HttpStatus.OK , event1 );
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponceHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR , null );
         }
 
     }
