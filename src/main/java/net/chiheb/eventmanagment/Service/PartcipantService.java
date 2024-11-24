@@ -24,7 +24,7 @@ public class PartcipantService {
         Participant participant1 = partcipantRepository.findParticipantByEmail(participant.getEmail());
         if (participant1 == null) {
             participant.setPassword(passwordEncoder.encode(participant.getPassword()));
-            participant.setRole(Role.ROLE_PARTICIPANT);
+            participant.setRole(Role.PARTICIPANT);
             return partcipantRepository.saveAndFlush(participant);
         }else throw new EmailAleadyExists("Email aleardy exists");
     }

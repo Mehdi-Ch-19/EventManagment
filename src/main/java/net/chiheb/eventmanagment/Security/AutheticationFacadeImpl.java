@@ -26,10 +26,10 @@ public class AutheticationFacadeImpl implements AuthenticationFacade{
         }
 
         CustomerUserDetails userDetails = (CustomerUserDetails) getAuthentication().getPrincipal();
-        if(userDetails.getRole().name().equals("ROLE_ORGANIZATOR")) {
+        if(userDetails.getRole().name().equals("ORGANIZATOR")) {
             return organizatorRepository.findOrganizatorByEmail(userDetails.getUsername());
         }
-        if (userDetails.getRole().name().equals("ROLE_PARTICIPANT")){
+        if (userDetails.getRole().name().equals("PARTICIPANT")){
             return partcipantRepository.findParticipantByEmail(userDetails.getUsername());
         }
         return null;

@@ -27,6 +27,9 @@ public class CategoryService {
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findCategoriesByCategoryName(name);
+    }
     @Transactional
     public Set<Event> getalleventsbycategory(Category cat){
         Category category = categoryRepository.findByCategoryId(cat.getCategoryId());

@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment.Service;
 
 import net.chiheb.eventmanagment.Dto.EventCreationDto;
+import net.chiheb.eventmanagment.Dto.EventCreationFrontDto;
 import net.chiheb.eventmanagment.Entity.Category;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.Organizator;
@@ -8,6 +9,7 @@ import net.chiheb.eventmanagment.Entity.Participant;
 import net.chiheb.eventmanagment.Exeption.AleardyEnrolled;
 import net.chiheb.eventmanagment.Exeption.CapacityNotEnoughExeption;
 import net.chiheb.eventmanagment.Repository.EventRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +21,13 @@ public class EventService {
 
     private EventRepository eventRepository;
     private LisAttenteService lisAttenteService;
-    private PartcipantService partcipantService;
-    public EventService(EventRepository eventRepository, LisAttenteService lisAttenteService, PartcipantService partcipantService){
+    private OrganizatorService organizatorService;
+    private CategoryService categoryService;
+    public EventService(EventRepository eventRepository, LisAttenteService lisAttenteService, @Lazy OrganizatorService organizatorService,@Lazy CategoryService categoryService){
         this.eventRepository = eventRepository;
         this.lisAttenteService = lisAttenteService;
-        this.partcipantService = partcipantService;
+        this.organizatorService = organizatorService;
+        this.categoryService = categoryService;
     }
     @Transactional
     public Event createEvent(EventCreationDto eventCreationDto){
@@ -41,6 +45,26 @@ public class EventService {
 
         return eventRepository.saveAndFlush(e);
     }
+    @Transactional
+    public Event createEventFront(EventCreationFrontDto eventCreationDto){
+        Event e = new Event();
+        e.setTitle(eventCreationDto.getTitle());
+        e.setDescription(eventCreationDto.getDescription());
+        Category category = categoryService.getCategoryById(eventCreationDto.getCategoryid());
+        e.setCategory(category);
+        e.setMaxCapacity(eventCreationDto.getMaxCapacity());
+        e.setParticipants(new ArrayList<>());
+        Organizator organizator = organizatorService.getOrganizatorById(eventCreationDto.getOrganizatorid());
+        e.setOrganizator(organizator);
+        e.setDate(eventCreationDto.getDate());
+        e.getCategory().getEvents().add(e);
+        /*e.getCategory().addEvent(e);*/
+        e.getOrganizator().getEventSet().add(e);
+
+        return eventRepository.saveAndFlush(e);
+    }
+
+
     public Optional<Event> getEventById(Long id){
         return eventRepository.findById(id);
     }
@@ -68,10 +92,6 @@ public class EventService {
             lisAttenteService.addParticipantToWaitingListofEvent(participant,event);
             throw new CapacityNotEnoughExeption("Capacity not enough");
         }
-        /*List<Participant> participants = eventRepository.getParticipantsByEventid(event.getEventid());
-        participants.add(participant);*/
-
-
     }
     public boolean checkifparticipantexistsonevent(Event event , Participant participant){
         List<Participant> participants = event.getParticipants();
@@ -86,8 +106,9 @@ public class EventService {
     public boolean checkifcapacityenough(Event event){
         return event.getParticipants().size() < event.getMaxCapacity();
     }
-    public List<Event> getAllEventsByCategory(Category category) {
-        return eventRepository.findAllByCategory(category);
+    public List<Event> getAllEventsByCategory(String category) {
+        Category category1 = categoryService.getCategoryByName(category);
+        return eventRepository.findAllByCategory(category1);
     }
     public List<Event> getAllEventByOrganizator(Organizator organizator){
         return eventRepository.findAllByOrganizator(organizator);
@@ -98,6 +119,9 @@ public class EventService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public List<Event> getallevents(){
+        return eventRepository.findAll();
     }
 
 

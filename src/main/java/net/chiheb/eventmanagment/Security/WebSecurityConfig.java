@@ -34,6 +34,10 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
          http.authorizeHttpRequests(auth->
                 auth.requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/event/all").permitAll()
+                        .requestMatchers("/api/v1/event/create")
+                        .hasAnyRole("ORGANIZATOR")
+                        .requestMatchers("api/v1/event/category").permitAll()
                         .anyRequest()
                         .authenticated()
         );

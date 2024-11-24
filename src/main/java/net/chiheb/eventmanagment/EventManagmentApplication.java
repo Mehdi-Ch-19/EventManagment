@@ -62,6 +62,7 @@ public class EventManagmentApplication {
             organizator.setEmail("mehdi@gmail.com");
             organizator.setPassword("kaiahhbs");
             Organizator organizator1 = organizatorService.createOrganizator(organizator);
+            System.out.println(organizator1);
             EventCreationDto event = new EventCreationDto();
             event.setTitle("mazazin");
             event.setCategory(category);
