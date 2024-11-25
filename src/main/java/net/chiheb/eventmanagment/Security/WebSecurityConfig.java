@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/event/all").permitAll()
                         .requestMatchers("/api/v1/event/create")
                         .hasAnyRole("ORGANIZATOR")
+                        .requestMatchers("/api/v1/event/confirm").permitAll()
                         .requestMatchers("api/v1/event/category").permitAll()
                         .anyRequest()
                         .authenticated()

@@ -3,6 +3,8 @@ package net.chiheb.eventmanagment.Entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalIdCache;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,18 +31,13 @@ public class Event {
     @JoinColumn(name = "organizatorId")
     private Organizator organizator;
     @ManyToOne
-    @JoinColumn(name = "category")
+    @JoinColumn(name = "categoryId")
     //@JsonBackReference
     private Category category;
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    @JoinTable(
-            name = "event_participants",
-            joinColumns = @JoinColumn(name = "eventid"),
-            inverseJoinColumns = @JoinColumn(name = "participantId")
-    )
-    private List<Participant> participants = new ArrayList<>();
+    @OneToMany( mappedBy = "event", cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    private List<EventParticipant> participants = new ArrayList<>();
 
     public void addParticipant(Participant participant) {
-        this.getParticipants().add(participant);
+        //this.getParticipants().add(participant);
     }
 }

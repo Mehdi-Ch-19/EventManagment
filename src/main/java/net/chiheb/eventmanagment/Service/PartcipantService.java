@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment.Service;
 
 import net.chiheb.eventmanagment.Entity.Event;
+import net.chiheb.eventmanagment.Entity.EventParticipant;
 import net.chiheb.eventmanagment.Entity.Participant;
 import net.chiheb.eventmanagment.Entity.Role;
 import net.chiheb.eventmanagment.Exeption.EmailAleadyExists;
@@ -28,7 +29,7 @@ public class PartcipantService {
             return partcipantRepository.saveAndFlush(participant);
         }else throw new EmailAleadyExists("Email aleardy exists");
     }
-    public List<Event> getAllEvents(Long participantId) {
+    public List<EventParticipant> getAllEvents(Long participantId) {
         return partcipantRepository.findById(participantId).get().getEventList();
     }
     public Participant getParticipantById(Long participantId) {

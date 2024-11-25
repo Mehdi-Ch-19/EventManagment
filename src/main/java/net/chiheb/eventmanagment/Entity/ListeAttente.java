@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "liste_attente",
+@Table(
+        name = "liste_attentes",
         uniqueConstraints = @UniqueConstraint(
-        columnNames = {"participantId","eventId"}
+        columnNames = {"participant_id","event_id"}
 ))
 @Builder
 @NoArgsConstructor
@@ -17,12 +18,12 @@ import lombok.*;
 public class ListeAttente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long waitinglist;
+    private Long listeattenteId;
     @OneToOne
-    @JoinColumn(name = "participantId")
+    @JoinColumn(name = "participant_id")
     private Participant participant;
     @OneToOne
-    @JoinColumn(name="eventId")
+    @JoinColumn(name="event_id")
     private Event event;
     private int position;
 }

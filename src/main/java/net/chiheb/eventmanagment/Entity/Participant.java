@@ -3,6 +3,7 @@ package net.chiheb.eventmanagment.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import net.chiheb.eventmanagment.Entity.mail.ConfirmationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -18,9 +19,10 @@ import java.util.*;
 public class Participant extends User{
 
 
-    @ManyToMany(mappedBy = "participants")
+    @OneToMany(mappedBy = "participant")
     @JsonIgnore
-    private List<Event> eventList = new ArrayList<>();
+    private List<EventParticipant> eventList = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

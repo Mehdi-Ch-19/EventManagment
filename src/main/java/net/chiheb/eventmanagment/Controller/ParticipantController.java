@@ -2,6 +2,7 @@ package net.chiheb.eventmanagment.Controller;
 
 
 import net.chiheb.eventmanagment.Entity.Event;
+import net.chiheb.eventmanagment.Entity.EventParticipant;
 import net.chiheb.eventmanagment.Entity.Participant;
 import net.chiheb.eventmanagment.Service.PartcipantService;
 import net.chiheb.eventmanagment.config.ResponceHandler;
@@ -33,7 +34,7 @@ public class ParticipantController {
 
     @GetMapping("/{participantid}/events")
     public ResponseEntity<?> getParticipantEvents(@PathVariable("participantid") Long participantid) {
-        List<Event> events = partcipantService.getAllEvents(participantid);
+        List<EventParticipant> events = partcipantService.getAllEvents(participantid);
         return ResponceHandler.generateResponse("events list ", HttpStatus.OK,events);
     }
 }
