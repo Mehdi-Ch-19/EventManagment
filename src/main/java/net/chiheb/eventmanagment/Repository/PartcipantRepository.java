@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment.Repository;
 
 import net.chiheb.eventmanagment.Entity.Event;
+import net.chiheb.eventmanagment.Entity.EventParticipant;
 import net.chiheb.eventmanagment.Entity.Participant;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface PartcipantRepository extends JpaRepository<Participant,Long> {
     @EntityGraph(attributePaths = {"eventList"})
     Optional<Participant> findParticipantById(Long id);
     Participant findParticipantByEmail(String email);
+
 }

@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -69,7 +71,9 @@ public class EventService {
         e.setDescription(eventCreationDto.getDescription());
         Category category = categoryService.getCategoryById(eventCreationDto.getCategoryid());
         e.setCategory(category);
+        e.setImageUrl(eventCreationDto.getImageUrl());
         e.setMaxCapacity(eventCreationDto.getMaxCapacity());
+        e.setLocation(eventCreationDto.getLocation());
         e.setParticipants(new ArrayList<>());
         Organizator organizator = organizatorService.getOrganizatorById(eventCreationDto.getOrganizatorid());
         e.setOrganizator(organizator);
@@ -129,10 +133,15 @@ public class EventService {
 
                 /*event.getParticipants().add(participant1);
                 participant1.getEventList().add(event);*/
-
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                String formatDateTime = now.format(formatter);
                 EventParticipant eventParticipant = new EventParticipant();
                 eventParticipant.setParticipant(participant1);
                 eventParticipant.setEvent(event);
+                eventParticipant.setPurchaseat(
+                        LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),formatter)
+                );
                 eventParticipant.setConfirmad(false);
                 EventPartcipantPk eventPartcipantPk = new EventPartcipantPk();
                 eventPartcipantPk.setEventId(event.getEventid());
@@ -142,9 +151,13 @@ public class EventService {
                 participant1.getEventList().add(eventParticipant);*/
 
                 EventParticipant eventParticipant1 = eventParticipantRepository.saveAndFlush(eventParticipant);
+
+                event.getParticipants().add(eventParticipant1);
+                participant1.getEventList().add(eventParticipant1);
+
                 String token = emailService.saveConfirmationToken(eventParticipant1);
                 String link = "http://localhost:8081/api/v1/event/confirm?token=" + token;
-                emailService.sendEmail(participant1.getEmail(), buildEmail(participant1.getName(), link));
+                //emailService.sendEmail(participant1.getEmail(), buildEmail(participant1.getName(), link));
                 return eventParticipant1;
                 //eventRepository.saveAndFlush(event);
             }

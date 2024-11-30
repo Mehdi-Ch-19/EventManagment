@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ListAttentesRepository extends JpaRepository<ListeAttente,Long> {
-    @Query(value = "SELECT COALESCE(MAX(position), 0) + 1 FROM liste_attente WHERE liste_attente.event_id = ?1",nativeQuery = true)
+    @Query(value = "SELECT COALESCE(MAX(position), 0) + 1 FROM liste_attentes WHERE liste_attentes.event_id = ?1",nativeQuery = true)
     int getMaxPosition(Long eventid);
 
 }

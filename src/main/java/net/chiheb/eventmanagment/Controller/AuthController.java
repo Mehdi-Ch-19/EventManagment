@@ -79,13 +79,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto){
         try {
-            if(registerDto.getType().equals("ROLE_PARTICIPANT")){
+            if(registerDto.getType().equals("participant")){
                 Participant user = new Participant();
                 user.setEmail(registerDto.getUser().getEmail());
                 user.setPassword(registerDto.getUser().getPassword());
                 user.setName(registerDto.getUser().getName());
                 partcipantService.addParticipant(user);
-            } else if (registerDto.getType().equals("ROLE_ORGANIZATOR")) {
+            } else if (registerDto.getType().equals("organizator")) {
                 Organizator organizator = (Organizator) registerDto.getUser();
                 organizator.setWebsite(((Organizator) registerDto.getUser()).getWebsite());
                 organizator.setEmail(registerDto.getUser().getEmail());

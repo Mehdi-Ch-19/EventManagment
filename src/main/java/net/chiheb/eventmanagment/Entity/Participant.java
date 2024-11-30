@@ -20,7 +20,7 @@ public class Participant extends User{
 
 
     @OneToMany(mappedBy = "participant")
-    @JsonIgnore
+    //@JsonIgnore
     private List<EventParticipant> eventList = new ArrayList<>();
 
 

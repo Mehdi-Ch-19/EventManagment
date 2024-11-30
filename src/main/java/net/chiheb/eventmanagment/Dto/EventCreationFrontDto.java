@@ -10,12 +10,12 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class EventCreationFrontDto {
     private String title;
     private String description;
     private LocalDate date;
     private String location;
+    private String imageUrl;
     private int MaxCapacity;
     private Long organizatorid;
     private Long categoryid;

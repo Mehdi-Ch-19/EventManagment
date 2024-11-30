@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment;
 
 import net.chiheb.eventmanagment.Dto.EventCreationDto;
+import net.chiheb.eventmanagment.Dto.EventCreationFrontDto;
 import net.chiheb.eventmanagment.Entity.Category;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.Organizator;
@@ -63,10 +64,10 @@ public class EventManagmentApplication {
             organizator.setPassword("kaiahhbs");
             Organizator organizator1 = organizatorService.createOrganizator(organizator);
             System.out.println(organizator1);
-            EventCreationDto event = new EventCreationDto();
+            EventCreationFrontDto event = new EventCreationFrontDto();
             event.setTitle("mazazin");
-            event.setCategory(category);
-            event.setOrganizator(organizator);
+            event.setCategoryid(category.getCategoryId());
+            event.setOrganizatorid(organizator.getId());
             event.setDescription("20 eduthion du mazain");
             event.setMaxCapacity(2);
             event.setDate(LocalDate.now());
@@ -83,7 +84,7 @@ public class EventManagmentApplication {
             //category1.getEvents().add(newevent);
             //System.out.println(organizator1.getEventSet().size());
 
-            Event event1 = eventService.createEvent(event);
+            Event event1 = eventService.createEventFront(event);
             //organizator1.getEventSet().add(newevent);
             //System.out.println(organizatorService.getOrganizatorEvents(organizator1).size());
             //System.out.println(categoryService.getalleventsbycategory(category1).size());

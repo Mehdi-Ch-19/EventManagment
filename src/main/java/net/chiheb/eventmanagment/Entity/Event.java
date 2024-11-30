@@ -1,6 +1,8 @@
 package net.chiheb.eventmanagment.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -27,6 +29,7 @@ public class Event {
     private LocalDate date;
     private String location;
     private int MaxCapacity;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "organizatorId")
     private Organizator organizator;
@@ -34,7 +37,8 @@ public class Event {
     @JoinColumn(name = "categoryId")
     //@JsonBackReference
     private Category category;
-    @OneToMany( mappedBy = "event", cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @OneToMany( mappedBy = "event")
+    @JsonIgnore
     private List<EventParticipant> participants = new ArrayList<>();
 
     public void addParticipant(Participant participant) {
