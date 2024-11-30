@@ -16,7 +16,10 @@ import java.util.Set;
 public class OrganizatorService {
     private final OrganizatorRepository organizatorRepository;
     private final PasswordEncoder passwordEncoder;
-    public OrganizatorService(OrganizatorRepository organizatorRepository, EventService eventService, PasswordEncoder passwordEncoder) {
+    public OrganizatorService(OrganizatorRepository
+                                      organizatorRepository,
+                              EventService eventService,
+                              PasswordEncoder passwordEncoder) {
         this.organizatorRepository = organizatorRepository;
         this.passwordEncoder = passwordEncoder;
     }

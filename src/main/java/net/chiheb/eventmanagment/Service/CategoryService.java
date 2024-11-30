@@ -19,17 +19,21 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+    // create new category by provinding name of the category
     @Transactional
     public Category createCategoty(Category category) {
         return categoryRepository.save(category);
     }
+    // get a category by the primary key
     @Transactional
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
+    // get a catgory by name
     public Category getCategoryByName(String name) {
         return categoryRepository.findCategoriesByCategoryName(name);
     }
+    // get all events filter by category
     @Transactional
     public Set<Event> getalleventsbycategory(Category cat){
         Category category = categoryRepository.findByCategoryId(cat.getCategoryId());

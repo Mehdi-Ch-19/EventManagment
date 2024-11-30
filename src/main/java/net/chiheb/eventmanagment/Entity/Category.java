@@ -23,8 +23,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     private String categoryName;
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY
+            ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JsonIgnore
     private Set<Event> events = new HashSet<>();
 }

@@ -15,11 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class EventManagmentApplication {
@@ -85,47 +81,7 @@ public class EventManagmentApplication {
             //System.out.println(organizator1.getEventSet().size());
 
             Event event1 = eventService.createEventFront(event);
-            //organizator1.getEventSet().add(newevent);
-            //System.out.println(organizatorService.getOrganizatorEvents(organizator1).size());
-            //System.out.println(categoryService.getalleventsbycategory(category1).size());
-            //System.out.println(participant2.getParticipantId());
-           // eventService.addParticipantToEvent(event1,participant);
-            //Participant p2 = new Participant();
-            //partcipantService.addParticipant(p2);
-           // eventService.addParticipantToEvent(event1,participant3);
-            /*event1.getParticipants().add(participant3);
-            participant3.getEventList().add(event1);
-            eventRepository.saveAndFlush(event1);
-            event1.getParticipants().add(participant2);
-            participant2.getEventList().add(event1);
-            System.out.println(event1.getParticipants());
-            eventRepository.saveAndFlush(event1);*/
-           // eventRepository.save(event1);
-            //eventService.addParticipantToEvent(event1,p2);
-            //System.out.println(category1.getEvents().size());
-            //System.out.println(event1.getParticipants().size());
-            /*System.out.println("gggg");
-            System.out.println(organizatorService.getOrganizatorEvents(organizator).size());*/
-            /*
-            //category1.getEvents().add(event1);
 
-            event1.setLocation("new location");
-            eventService.updateEvent(event1);
-            //Event e2 =  eventService.getOneEvent(event1.getEventid());
-            System.out.println(categoryService.getalleventsbycategory(category1.getCategoryId()).size());
-            eventService.getAllEventsByCategory(category1).forEach(event2 -> {
-                System.out.println(event2.getDescription());
-            });
-            eventService.getAllEventByOrganizator(organizator1).forEach(event3 -> {
-                System.out.println(event3.getMaxCapacity());
-            });
-            System.out.println("organizator event size = " + organizator1.getEventSet().size());
-           // eventService.deleteEvent(event1);
-            System.out.println(eventService.getAllEventByOrganizator(organizator1).size());
-            //System.out.println(e2.getParticipants().size());
-            eventService.addParticipantToEvent(event1, participant);
-            System.out.println(event1.getParticipants().size());
-            System.out.println(category1.getEvents().size());*/
         };
     }
     public static void main(String[] args) {

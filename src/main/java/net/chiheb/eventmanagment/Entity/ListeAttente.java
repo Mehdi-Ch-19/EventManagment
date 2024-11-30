@@ -27,3 +27,4 @@ public class ListeAttente {
     private Event event;
     private int position;
 }
+

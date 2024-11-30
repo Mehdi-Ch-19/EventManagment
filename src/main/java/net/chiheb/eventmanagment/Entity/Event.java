@@ -15,12 +15,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +39,6 @@ public class Event {
     private Organizator organizator;
     @ManyToOne
     @JoinColumn(name = "categoryId")
-    //@JsonBackReference
     private Category category;
     @OneToMany( mappedBy = "event")
     @JsonIgnore

@@ -46,22 +46,7 @@ public class EventService {
         this.emailService = emailService1;
     }
 
-    @Transactional
-    public Event createEvent(EventCreationDto eventCreationDto){
-        Event e = new Event();
-        e.setTitle(eventCreationDto.getTitle());
-        e.setDescription(eventCreationDto.getDescription());
-        e.setCategory(eventCreationDto.getCategory());
-        e.setMaxCapacity(eventCreationDto.getMaxCapacity());
-        e.setParticipants(new ArrayList<>());
-        e.setOrganizator(eventCreationDto.getOrganizator());
-        e.setDate(eventCreationDto.getDate());
-        e.getCategory().getEvents().add(e);
-        /*e.getCategory().addEvent(e);*/
-        e.getOrganizator().getEventSet().add(e);
 
-        return eventRepository.saveAndFlush(e);
-    }
     /*
         *  Function for creating events by an Organizator
      * */
@@ -99,42 +84,16 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    // Add a user to event providing eventid and user info
 
-    //@Transactional
-   /* public void addParticipantToEvent(Long eventid, Participant participant){
-        Event event = getEventById(eventid).get();
-        System.out.println(event.getParticipants().size());
-        if(checkifcapacityenough(event)){
-            //System.out.println(event.getParticipants());
-            if(checkifparticipantexistsonevent(event,participant)){
-                System.out.println("Participant already exists");
-                throw new AleardyEnrolled("aleady enrollred");
-            }else {
-                //System.out.println(event);
-                event.getParticipants().add(participant);
-                participant.getEventList().add(event);
-                eventRepository.saveAndFlush(event);
-            }
-
-        }else {
-            lisAttenteService.addParticipantToWaitingListofEvent(participant,event);
-            throw new CapacityNotEnoughExeption("Capacity not enough");
-        }
-    }*/
     public EventParticipant addParticipantToEventFront(Long eventid, ParticipantEventEnrolDto participant){
         Event event = getEventById(eventid).get();
         Participant participant1 = partcipantService.getParticipantById(participant.getParticipantId());
-        //System.out.println(event.getParticipants().size());
         if(checkifcapacityenough(event)){
-            //System.out.println(event.getParticipants());
             if(checkifparticipantexistsonevent(event,participant1)){
                 System.out.println("Participant already exists");
                 throw new AleardyEnrolled("aleady enrollred");
             }else {
-                //System.out.println(event);
-
-                /*event.getParticipants().add(participant1);
-                participant1.getEventList().add(event);*/
                 LocalDateTime now = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                 String formatDateTime = now.format(formatter);
@@ -142,7 +101,9 @@ public class EventService {
                 eventParticipant.setParticipant(participant1);
                 eventParticipant.setEvent(event);
                 eventParticipant.setPurchaseat(
-                        LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),formatter)
+                        LocalDateTime.parse(LocalDateTime.now().
+                                format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                ,formatter)
                 );
                 eventParticipant.setConfirmad(false);
                 EventPartcipantPk eventPartcipantPk = new EventPartcipantPk();
@@ -151,12 +112,10 @@ public class EventService {
                 eventParticipant.setEventPartcipantPk(eventPartcipantPk);
                /* event.getParticipants().add(eventParticipant);
                 participant1.getEventList().add(eventParticipant);*/
-
                 EventParticipant eventParticipant1 = eventParticipantRepository.saveAndFlush(eventParticipant);
-
                 event.getParticipants().add(eventParticipant1);
                 participant1.getEventList().add(eventParticipant1);
-
+                /* Email sending */
                 String token = emailService.saveConfirmationToken(eventParticipant1);
                 String link = "http://localhost:8081/api/v1/event/confirm?token=" + token;
                 //emailService.sendEmail(participant1.getEmail(), buildEmail(participant1.getName(), link));
@@ -165,34 +124,26 @@ public class EventService {
             }
 
         }else {
+            // if capacity is not enough then we add him to waitind list
             lisAttenteService.addParticipantToWaitingListofEvent(participant1,event);
             throw new CapacityNotEnoughExeption("Capacity not enough");
         }
     }
 
-    public void confirmparticipation(EventParticipant eventParticipant){
-
-    }
+    // check if user is already enroled
     public boolean checkifparticipantexistsonevent(Event event , Participant participant){
-        //List<Participant> participants = event.getParticipants();
         EventParticipant eventParticipant = eventParticipantRepository.
                 findEventParticipantByEventAndParticipant(event,participant);
-        /*List<EventParticipant> eventParticipants = eventParticipantRepository.findAll();
-        AtomicBoolean exist = new AtomicBoolean(false);
-        eventParticipants.forEach(eventParticipant -> {
-            if(Objects.equals(eventParticipant.getEvent().getEventid(), event.getEventid())&&
-            Objects.equals(eventParticipant.getParticipant().getId() , participant.getId())){
-                exist.set(true);
-            }
-        });*/
         if (eventParticipant == null){
             return false;
         }else return true;
-        //return exist.get();
+
     }
+    // check if capacity is enough to book a ticket
     public boolean checkifcapacityenough(Event event){
         return event.getParticipants().size() < event.getMaxCapacity();
     }
+    // get all the events by category
     public List<Event> getAllEventsByCategory(String category) {
         Category category1 = categoryService.getCategoryByName(category);
         return eventRepository.findAllByCategory(category1);

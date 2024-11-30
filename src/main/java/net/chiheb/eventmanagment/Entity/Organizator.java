@@ -19,10 +19,11 @@ public class Organizator extends User{
 
     private String phoneNumber;
     private String website;
-    @OneToMany(mappedBy = "organizator",cascade = {CascadeType.PERSIST,CascadeType.MERGE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organizator",
+            cascade = {CascadeType.PERSIST,CascadeType.MERGE},
+            fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Event> eventSet = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ORGANIZATOR"));

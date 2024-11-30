@@ -19,12 +19,14 @@ public class PartcipantService {
     private final PasswordEncoder passwordEncoder;
     private final EventParticipantRepository eventParticipantRepository;
 
-    public PartcipantService(PartcipantRepository partcipantRepository, PasswordEncoder passwordEncoder, EventParticipantRepository eventParticipantRepository) {
+    public PartcipantService(PartcipantRepository partcipantRepository,
+                             PasswordEncoder passwordEncoder,
+                             EventParticipantRepository eventParticipantRepository) {
         this.partcipantRepository = partcipantRepository;
         this.passwordEncoder = passwordEncoder;
         this.eventParticipantRepository = eventParticipantRepository;
     }
-
+    // add a user as a participant
     public Participant addParticipant(Participant participant) {
         Participant participant1 = partcipantRepository.findParticipantByEmail(participant.getEmail());
         if (participant1 == null) {
@@ -33,13 +35,13 @@ public class PartcipantService {
             return partcipantRepository.saveAndFlush(participant);
         }else throw new EmailAleadyExists("Email aleardy exists");
     }
+    // return all my event
     public List<EventParticipant> getAllEvents(Long participantId) {
-        List<EventParticipant> allByParticipant = eventParticipantRepository.findAllByParticipant(getParticipantById(participantId));
-
+        List<EventParticipant> allByParticipant = eventParticipantRepository.
+                findAllByParticipant(getParticipantById(participantId));
         System.out.println(allByParticipant.size());
         return allByParticipant;
-        /*return eventParticipantRepository.
-                findAllByParticipant(getParticipantById(participantId));*/
+
     }
 
     public Participant getParticipantById(Long participantId) {

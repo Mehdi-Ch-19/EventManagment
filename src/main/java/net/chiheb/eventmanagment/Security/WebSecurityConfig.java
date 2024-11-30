@@ -42,6 +42,7 @@ public class WebSecurityConfig {
          http.authorizeHttpRequests(auth->
                 auth.requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/event/all").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/v1/event/create")
                         .hasAnyRole("ORGANIZATOR")
                         .requestMatchers("/api/v1/event/confirm").permitAll()

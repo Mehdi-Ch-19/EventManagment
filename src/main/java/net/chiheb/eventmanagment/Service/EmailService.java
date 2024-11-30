@@ -32,6 +32,7 @@ public class EmailService {
         this.eventParticipantRepository = eventParticipantRepository;
     }
 
+    // persit the email token
     public String saveConfirmationToken(EventParticipant eventParticipant){
         ConfirmationToken confirmationToken = new ConfirmationToken();
         String token = UUID.randomUUID().toString();
@@ -42,10 +43,13 @@ public class EmailService {
         confirmationTokenRepository.save(confirmationToken);
         return token;
     }
+
+    // update the time that he confirm his participation
     public int setConfirmedAt(String token) {
         return confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
     }
 
+    // send email to particpant
     @Async
     public void sendEmail(String to,String  email) {
         try {
@@ -70,6 +74,7 @@ public class EmailService {
         ConfirmationToken confirmationToken = getToken(token);
         return confirmationToken.getEventParticipant();
     }
+    // if the provided email token is valid then we need to confirm the participant
     @Transactional
     public boolean confirmToken(String token) {
         ConfirmationToken  confirmToken = getToken(token);
@@ -92,7 +97,6 @@ public class EmailService {
         setConfirmedAt(token);
         eventParticipantRepository.save(eventParticipant);
         //Returning confirmation message if the token matches
-
         return true;
     }
 }

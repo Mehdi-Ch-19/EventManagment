@@ -18,15 +18,13 @@ import java.util.*;
 @ToString
 public class Participant extends User{
 
-
     @OneToMany(mappedBy = "participant")
-    //@JsonIgnore
     private List<EventParticipant> eventList = new ArrayList<>();
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_PARTICIPANT"));
 
     }
 }
+
+

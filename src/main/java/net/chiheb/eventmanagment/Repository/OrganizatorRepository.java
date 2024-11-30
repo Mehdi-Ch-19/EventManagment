@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface OrganizatorRepository extends JpaRepository<Organizator, Long> {
     @EntityGraph(attributePaths = {"eventSet"})
     Optional<Organizator> findById(Long organizatorId);
-
     Organizator findOrganizatorByEmail(String email);
 }
+

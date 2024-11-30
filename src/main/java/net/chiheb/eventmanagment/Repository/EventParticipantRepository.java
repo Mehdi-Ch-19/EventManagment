@@ -16,9 +16,6 @@ import java.util.List;
 @Repository
 public interface EventParticipantRepository extends JpaRepository<EventParticipant, EventPartcipantPk> {
     EventParticipant findEventParticipantByEventAndParticipant(Event event, Participant participant);
-   /* @Query(value = "SELECT e.event , e.isConfirmad from EventParticipant e join Participant" +
-            " p on e.eventPartcipantPk.participantId = p.id where e.eventPartcipantPk.participantId = :participantId",nativeQuery = false)
-    List<EventParticipant> findAllByParticipant(@Param("participantId") Long participantId);*/
    @EntityGraph(attributePaths = {"event","event.organizator","event.category"})
    List<EventParticipant> findAllByParticipant(Participant participant);
 }
