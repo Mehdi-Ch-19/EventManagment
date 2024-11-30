@@ -25,7 +25,7 @@ public class EventParticipant {
     private Event event;
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime purchaseat;
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("participantId")

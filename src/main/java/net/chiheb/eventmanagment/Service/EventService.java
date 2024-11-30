@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -77,7 +78,8 @@ public class EventService {
         e.setParticipants(new ArrayList<>());
         Organizator organizator = organizatorService.getOrganizatorById(eventCreationDto.getOrganizatorid());
         e.setOrganizator(organizator);
-        e.setDate(eventCreationDto.getDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        e.setDate(LocalDate.parse(eventCreationDto.getDate().format(formatter)));
         e.getCategory().getEvents().add(e);
         /*e.getCategory().addEvent(e);*/
         e.getOrganizator().getEventSet().add(e);

@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -26,6 +27,8 @@ public class Event {
     private Long eventid;
     private String title;
     private String description;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String location;
     private int MaxCapacity;
