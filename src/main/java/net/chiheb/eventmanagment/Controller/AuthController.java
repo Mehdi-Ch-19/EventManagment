@@ -35,7 +35,7 @@ public class AuthController {
     public AuthenticationManager authenticationManager;
     public PartcipantService partcipantService;
     public OrganizatorService organizatorService;
-    JwtUtils jwtUtils;
+    public JwtUtils jwtUtils;
     public AuthController(AuthenticationManager authenticationManager,
      PartcipantService partcipantService, JwtUtils jwtUtils,
      OrganizatorService organizatorService) {

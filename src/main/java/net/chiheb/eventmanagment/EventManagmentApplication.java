@@ -16,6 +16,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class EventManagmentApplication {
@@ -32,16 +33,19 @@ public class EventManagmentApplication {
             participant.setEmail("x1");
             participant.setName("x");
             participant.setPassword("x");
+            participant.setAddrese("Temara nassim 1 ");
 
             Participant participant2 = new Participant();
             participant2.setEmail("elmahdichiheb19@gmail.com");
             participant2.setName("Kamal");
             participant2.setPassword("x");
+            participant2.setAddrese("Temara nassim 1 ");
 
             Participant participant3 = new Participant();
             participant3.setEmail("x3");
             participant3.setName("x");
             participant3.setPassword("x");
+            participant3.setAddrese("Temara nassim 1 ");
 
             partcipantService.addParticipant(participant);
             partcipantService.addParticipant(participant2);
@@ -65,16 +69,12 @@ public class EventManagmentApplication {
             event.setCategoryid(category.getCategoryId());
             event.setOrganizatorid(organizator.getId());
             event.setDescription("20 eduthion du mazain");
+            event.setEventStartTime(LocalDateTime.now().plusDays(5));
+            event.setEventEndTime(LocalDateTime.now().plusDays(8));
             event.setMaxCapacity(2);
             event.setDate(LocalDate.now());
-            Event newevent = Event.builder()
-                    .title("mazazin")
-                    .date(LocalDate.now())
-                    .MaxCapacity(500)
-                    .description("20 eduthion du mazain")
-                    .category(category1)
-                    .organizator(organizator1)
-                    .build();
+            System.out.println(event.getEventStartTime());
+            System.out.println(event.getEventEndTime());
             //organizator1.getEventSet().add(newevent);
             //organizator1.getEventSet().add(newevent);
             //category1.getEvents().add(newevent);

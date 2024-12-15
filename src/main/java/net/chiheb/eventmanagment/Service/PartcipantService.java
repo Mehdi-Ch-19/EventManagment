@@ -1,5 +1,6 @@
 package net.chiheb.eventmanagment.Service;
 
+import net.chiheb.eventmanagment.Dto.ParticipantDto;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.EventParticipant;
 import net.chiheb.eventmanagment.Entity.Participant;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -43,7 +45,19 @@ public class PartcipantService {
         return allByParticipant;
 
     }
-
+    public Participant updatePartcipant(ParticipantDto participant , Long id){
+        Participant participant1 =getParticipantById(id);
+        if (!checkIfEmailExists(participant.email())) {
+            participant1.setAddrese(participant.addrese());
+            participant1.setEmail(participant.email());
+            participant1.setName(participant.name());
+            return partcipantRepository.saveAndFlush(participant1);
+        }else throw new EmailAleadyExists("Email aleardy exists");
+    }
+    public boolean checkIfEmailExists(String email) {
+        Participant participantByEmail = partcipantRepository.findParticipantByEmail(email);
+        return participantByEmail != null;
+    }
     public Participant getParticipantById(Long participantId) {
         return partcipantRepository.findById(participantId).get();
     }

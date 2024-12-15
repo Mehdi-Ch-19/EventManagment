@@ -18,6 +18,7 @@ import java.util.*;
 @ToString
 public class Participant extends User{
 
+    private String addrese;
     @OneToMany(mappedBy = "participant")
     private List<EventParticipant> eventList = new ArrayList<>();
     @Override

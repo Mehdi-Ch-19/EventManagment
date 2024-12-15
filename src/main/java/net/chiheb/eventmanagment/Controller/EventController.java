@@ -1,9 +1,6 @@
 package net.chiheb.eventmanagment.Controller;
 
-import net.chiheb.eventmanagment.Dto.EventCreationDto;
-import net.chiheb.eventmanagment.Dto.EventCreationFrontDto;
-import net.chiheb.eventmanagment.Dto.EventParticipnantsResponce;
-import net.chiheb.eventmanagment.Dto.ParticipantEventEnrolDto;
+import net.chiheb.eventmanagment.Dto.*;
 import net.chiheb.eventmanagment.Dto.mapper.EventPartcipantMapper;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.EventParticipant;
@@ -51,7 +48,7 @@ public class EventController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllEvents(){
-        List<Event> events = eventService.getallevents();
+        List<EventDto> events = eventService.getallevents();
         return ResponceHandler.generateResponse("all the events", HttpStatus.OK , events);
     }
 

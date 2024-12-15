@@ -2,7 +2,9 @@ package net.chiheb.eventmanagment.Service;
 
 import net.chiheb.eventmanagment.Dto.EventCreationDto;
 import net.chiheb.eventmanagment.Dto.EventCreationFrontDto;
+import net.chiheb.eventmanagment.Dto.EventDto;
 import net.chiheb.eventmanagment.Dto.ParticipantEventEnrolDto;
+import net.chiheb.eventmanagment.Dto.mapper.EventMapper;
 import net.chiheb.eventmanagment.Dto.mapper.EventPartcipantMapper;
 import net.chiheb.eventmanagment.Entity.*;
 import net.chiheb.eventmanagment.Exeption.AleardyEnrolled;
@@ -28,6 +30,7 @@ public class EventService {
     private CategoryService categoryService;
     private PartcipantService partcipantService;
     private EventParticipantRepository eventParticipantRepository;
+    private EventMapper eventMapper;
     private EmailService  emailService;
 
     public EventService(EventRepository eventRepository,
@@ -35,7 +38,7 @@ public class EventService {
                         @Lazy OrganizatorService organizatorService,
                         @Lazy CategoryService categoryService,
                         @Lazy PartcipantService partcipantService,
-                        EventParticipantRepository eventParticipantRepository ,
+                        EventParticipantRepository eventParticipantRepository, EventMapper eventMapper,
                         EmailService emailService1){
         this.eventRepository = eventRepository;
         this.lisAttenteService = lisAttenteService;
@@ -43,6 +46,7 @@ public class EventService {
         this.categoryService = categoryService;
         this.partcipantService = partcipantService;
         this.eventParticipantRepository = eventParticipantRepository;
+        this.eventMapper = eventMapper;
         this.emailService = emailService1;
     }
 
@@ -52,11 +56,13 @@ public class EventService {
      * */
     @Transactional
     public Event createEventFront(EventCreationFrontDto eventCreationDto){
+        System.out.println(eventCreationDto);
         Event e = new Event();
         e.setTitle(eventCreationDto.getTitle());
         e.setDescription(eventCreationDto.getDescription());
         Category category = categoryService.getCategoryById(eventCreationDto.getCategoryid());
         e.setCategory(category);
+
         e.setImageUrl(eventCreationDto.getImageUrl());
         e.setMaxCapacity(eventCreationDto.getMaxCapacity());
         e.setLocation(eventCreationDto.getLocation());
@@ -64,12 +70,21 @@ public class EventService {
         Organizator organizator = organizatorService.getOrganizatorById(eventCreationDto.getOrganizatorid());
         e.setOrganizator(organizator);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         e.setDate(LocalDate.parse(eventCreationDto.getDate().format(formatter)));
+
+        e.setEventStartTime(LocalDateTime.parse(eventCreationDto.getEventStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),timeFormatter));
+        e.setEventEndTime(LocalDateTime.parse(eventCreationDto.getEventEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),timeFormatter));
         e.getCategory().getEvents().add(e);
         /*e.getCategory().addEvent(e);*/
         e.getOrganizator().getEventSet().add(e);
 
         return eventRepository.saveAndFlush(e);
+    }
+
+    public List<EventDto> getallevents(){
+        List<Event> events = eventRepository.findAll();
+        return events.stream().map(event -> eventMapper.toDto(event)).toList();
     }
 
 
@@ -157,9 +172,6 @@ public class EventService {
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-    public List<Event> getallevents(){
-        return eventRepository.findAll();
     }
 
     private String buildEmail(String name, String link) {
