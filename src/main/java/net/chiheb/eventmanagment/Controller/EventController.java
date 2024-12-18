@@ -55,10 +55,14 @@ public class EventController {
 
     @GetMapping("/category")
     public ResponseEntity<?> getEventsByCategory(@RequestParam String type){
-        List<Event> events = eventService.getAllEventsByCategory(type);
+        List<EventDto> events = eventService.getAllEventsByCategory(type);
         return ResponceHandler.generateResponse("all the events", HttpStatus.OK , events);
     }
-
+    @GetMapping("/upcoming")
+    public ResponseEntity<?> getUpcomingEvents(){
+        List<EventDto> events = eventService.getUpcomingEvents();
+        return ResponceHandler.generateResponse("all upcoming events", HttpStatus.OK , events);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<?> createEvent(@RequestBody EventCreationFrontDto event){

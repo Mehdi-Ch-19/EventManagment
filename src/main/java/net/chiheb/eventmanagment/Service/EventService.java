@@ -86,6 +86,11 @@ public class EventService {
         List<Event> events = eventRepository.findAll();
         return events.stream().map(event -> eventMapper.toDto(event)).toList();
     }
+    public List<EventDto> getUpcomingEvents(){
+        return eventRepository.findAll().stream().
+                filter(event -> event.getDate().isAfter(LocalDate.now()))
+                .map(event -> eventMapper.toDto(event)).toList();
+    }
 
 
     public Optional<Event> getEventById(Long id){
@@ -159,9 +164,10 @@ public class EventService {
         return event.getParticipants().size() < event.getMaxCapacity();
     }
     // get all the events by category
-    public List<Event> getAllEventsByCategory(String category) {
+    public List<EventDto> getAllEventsByCategory(String category) {
         Category category1 = categoryService.getCategoryByName(category);
-        return eventRepository.findAllByCategory(category1);
+        return eventRepository.findAllByCategory(category1).stream()
+                .map(event -> eventMapper.toDto(event)).toList();
     }
     public List<Event> getAllEventByOrganizator(Organizator organizator){
         return eventRepository.findAllByOrganizator(organizator);

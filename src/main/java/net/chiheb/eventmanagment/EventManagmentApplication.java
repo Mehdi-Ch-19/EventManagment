@@ -53,7 +53,17 @@ public class EventManagmentApplication {
 
 
             Category category =new Category();
-            category.setCategoryName("music");
+            category.setCategoryName("Music");
+            Category techcat =new Category();
+            techcat.setCategoryName("Tech");
+            Category geming =new Category();
+            geming.setCategoryName("Gaming");
+            Category education =new Category();
+            education.setCategoryName("Education");
+            Category medecine =new Category();
+            medecine.setCategoryName("Medecine");
+
+
             Category category1 = categoryService.createCategoty(category);
             Category category2 = categoryService.getCategoryById(1L);
             Organizator organizator = new Organizator();
@@ -64,14 +74,17 @@ public class EventManagmentApplication {
             organizator.setPassword("kaiahhbs");
             Organizator organizator1 = organizatorService.createOrganizator(organizator);
             System.out.println(organizator1);
+
             EventCreationFrontDto event = new EventCreationFrontDto();
-            event.setTitle("mazazin");
+            event.setTitle("mawazin");
             event.setCategoryid(category.getCategoryId());
             event.setOrganizatorid(organizator.getId());
             event.setDescription("20 eduthion du mazain");
+            event.setLocation("Rabat hotel sofitel 21 ");
             event.setEventStartTime(LocalDateTime.now().plusDays(5));
             event.setEventEndTime(LocalDateTime.now().plusDays(8));
             event.setMaxCapacity(2);
+            event.setImageUrl("https://www.vfairs.com/wp-content/uploads/2024/09/powerful-speaker-session-in-a-event-Freepik.jpeg");
             event.setDate(LocalDate.now());
             System.out.println(event.getEventStartTime());
             System.out.println(event.getEventEndTime());
@@ -79,9 +92,25 @@ public class EventManagmentApplication {
             //organizator1.getEventSet().add(newevent);
             //category1.getEvents().add(newevent);
             //System.out.println(organizator1.getEventSet().size());
-
             Event event1 = eventService.createEventFront(event);
+            categoryService.createCategoty(techcat);
+            categoryService.createCategoty(geming);
+            categoryService.createCategoty(education);
+            categoryService.createCategoty(medecine);
 
+
+            EventCreationFrontDto event2 = new EventCreationFrontDto();
+            event2.setTitle("mawazin");
+            event2.setCategoryid(techcat.getCategoryId());
+            event2.setOrganizatorid(organizator.getId());
+            event2.setDescription("20 eduthion du mazain");
+            event2.setLocation("Rabat hotel sofitel 21 ");
+            event2.setEventStartTime(LocalDateTime.now().plusDays(5));
+            event2.setEventEndTime(LocalDateTime.now().plusDays(8));
+            event2.setMaxCapacity(2);
+            event2.setImageUrl("https://www.vfairs.com/wp-content/uploads/2024/09/powerful-speaker-session-in-a-event-Freepik.jpeg");
+            event2.setDate(LocalDate.now());
+             eventService.createEventFront(event2);
         };
     }
     public static void main(String[] args) {

@@ -22,6 +22,7 @@ public class CategoryService {
     // create new category by provinding name of the category
     @Transactional
     public Category createCategoty(Category category) {
+        System.out.println(category.getCategoryName());
         return categoryRepository.save(category);
     }
     // get a category by the primary key

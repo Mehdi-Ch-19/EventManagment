@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record EventDto(
+        Long eventid,
          String title,
          String description,
         @Temporal(TemporalType.DATE)
