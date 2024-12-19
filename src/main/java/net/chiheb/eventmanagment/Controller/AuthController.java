@@ -84,6 +84,7 @@ public class AuthController {
                 user.setEmail(registerDto.getUser().getEmail());
                 user.setPassword(registerDto.getUser().getPassword());
                 user.setName(registerDto.getUser().getName());
+                user.setAddrese(((Participant)registerDto.getUser()).getAddrese());
                 partcipantService.addParticipant(user);
             } else if (registerDto.getType().equals("organizator")) {
                 Organizator organizator = (Organizator) registerDto.getUser();

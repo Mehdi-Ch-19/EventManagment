@@ -3,6 +3,7 @@ package net.chiheb.eventmanagment.Security;
 import lombok.AllArgsConstructor;
 import net.chiheb.eventmanagment.Security.jwt.AuthTokenFilter;
 import net.chiheb.eventmanagment.Security.jwt.JwtUtils;
+import net.chiheb.eventmanagment.Service.TokenBlackListService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisOperations;
@@ -40,6 +41,7 @@ public class WebSecurityConfig {
     private AuthEntryPoint authEntryPoint;
     private UserDetailsService userDetailsService;
     public AuthTokenFilter jwtAuthFilter;
+    private TokenBlackListService tokenBlackListService;
 
     private JwtUtils jwtUtils;
     @Bean
@@ -85,8 +87,7 @@ public class WebSecurityConfig {
             if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
                 token= headerAuth.substring(7, headerAuth.length());
             }
-            String email = jwtUtils.getUserNameFromJwtToken(token);
-            jwtUtils.storetokentocache(token,email);
+            tokenBlackListService.addToBlacklist(token);
         };
     }
     @Bean

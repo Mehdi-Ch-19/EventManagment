@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import net.chiheb.eventmanagment.Entity.User;
+import net.chiheb.eventmanagment.Service.TokenBlackListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import net.chiheb.eventmanagment.Security.CustomerUserDetails;
@@ -19,12 +20,13 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Objects;
+import java.util.function.Function;
 
 @Component
 @ConfigurationProperties(prefix = "mehdi.app")
 public class JwtUtils {
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private TokenBlackListService tokenBlackListService;
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     //@Value("${mehdi.app.jwtSecret}")
@@ -48,27 +50,30 @@ public class JwtUtils {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().verifyWith(getSignInKey()).build()
+                .parseSignedClaims(token).getBody();
+    }
 
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().verifyWith(getSignInKey()).build()
                 .parseSignedClaims(token).getPayload().getSubject();
     }
-    public void tokenisAlreadyUsedForLogout(String token) throws Exception {
-        String email = getUserNameFromJwtToken(token);
-        if (Objects.equals(redisTemplate.opsForValue().get(email), token)){
-            throw new Exception("token is used for logout please log in");
-        };
-    }
-    public void storetokentocache(String token,String email){
-        redisTemplate.opsForList().leftPush(email,token);
 
-    }
+
 
     public boolean validateJwtToken(String authToken) {
         try {
-            tokenisAlreadyUsedForLogout(authToken);
             Jwts.parser().verifyWith(getSignInKey()).build().parse(authToken);
+            tokenBlackListService.isBlacklisted(authToken);
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());

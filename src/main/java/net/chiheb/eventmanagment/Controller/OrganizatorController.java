@@ -1,5 +1,6 @@
 package net.chiheb.eventmanagment.Controller;
 
+import net.chiheb.eventmanagment.Dto.mapper.EventMapper;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.Organizator;
 import net.chiheb.eventmanagment.Entity.Participant;
@@ -16,9 +17,11 @@ import java.util.List;
 public class OrganizatorController {
 
     private OrganizatorService organizatorService;
+    private EventMapper eventMapper;
 
-    public OrganizatorController(OrganizatorService organizatorService) {
+    public OrganizatorController(OrganizatorService organizatorService, EventMapper eventMapper) {
         this.organizatorService = organizatorService;
+        this.eventMapper = eventMapper;
     }
     @PostMapping
     public ResponseEntity<?> registerOrganizator(@RequestBody Organizator organizator) {
@@ -31,8 +34,8 @@ public class OrganizatorController {
     }
 
     @GetMapping("/{organizatorId}/events")
-    public ResponseEntity<?> getOrganizatorEvents(@PathVariable Long organizatorid) {
-        List<Event> events = organizatorService.getOrganizatorEvents(organizatorid);
-        return ResponceHandler.generateResponse("events list ", HttpStatus.OK,events);
+    public ResponseEntity<?> getOrganizatorEvents(@PathVariable Long organizatorId) {
+        List<Event> events = organizatorService.getOrganizatorEvents(organizatorId);
+        return ResponceHandler.generateResponse("events list ", HttpStatus.OK,events.stream().map(event -> eventMapper.toDto(event)).toList());
     }
 }

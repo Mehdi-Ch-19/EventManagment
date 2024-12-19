@@ -1,10 +1,7 @@
 package net.chiheb.eventmanagment.Repository;
 
 import net.chiheb.eventmanagment.Dto.ParticipantEvents;
-import net.chiheb.eventmanagment.Entity.Event;
-import net.chiheb.eventmanagment.Entity.EventPartcipantPk;
-import net.chiheb.eventmanagment.Entity.EventParticipant;
-import net.chiheb.eventmanagment.Entity.Participant;
+import net.chiheb.eventmanagment.Entity.*;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +15,5 @@ public interface EventParticipantRepository extends JpaRepository<EventParticipa
     EventParticipant findEventParticipantByEventAndParticipant(Event event, Participant participant);
    @EntityGraph(attributePaths = {"event","event.organizator","event.category"})
    List<EventParticipant> findAllByParticipant(Participant participant);
+
 }
