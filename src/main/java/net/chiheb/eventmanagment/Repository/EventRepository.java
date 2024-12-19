@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByCategory(Category category);
+    @EntityGraph(attributePaths = {"category"})
     List<Event> findAllByOrganizator(Organizator organizator);
     @EntityGraph(attributePaths = {"participants"})
     List<Participant> getParticipantsByEventid(Long eventid);

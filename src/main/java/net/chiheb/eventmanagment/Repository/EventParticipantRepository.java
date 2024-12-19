@@ -16,4 +16,6 @@ public interface EventParticipantRepository extends JpaRepository<EventParticipa
    @EntityGraph(attributePaths = {"event","event.organizator","event.category"})
    List<EventParticipant> findAllByParticipant(Participant participant);
 
+   @Query(value = "SELECT COUNT(*) FROM event_partcipant WHERE event_id= ?1 and is_confirmad = true",nativeQuery = true)
+   int findnumOfParticipant(Long eventid);
 }

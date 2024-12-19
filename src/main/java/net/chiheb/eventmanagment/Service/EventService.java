@@ -169,6 +169,9 @@ public class EventService {
         return eventRepository.findAllByCategory(category1).stream()
                 .map(event -> eventMapper.toDto(event)).toList();
     }
+    public int numOfParticipantInEvent(Long  eventid){
+         return eventParticipantRepository.findnumOfParticipant(eventid);
+    }
     public List<Event> getAllEventByOrganizator(Organizator organizator){
         return eventRepository.findAllByOrganizator(organizator);
     }
