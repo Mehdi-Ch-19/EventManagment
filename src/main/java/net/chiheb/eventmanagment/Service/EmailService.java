@@ -3,6 +3,7 @@ package net.chiheb.eventmanagment.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import net.chiheb.eventmanagment.Entity.EventParticipant;
+import net.chiheb.eventmanagment.Entity.ListeAttente;
 import net.chiheb.eventmanagment.Entity.mail.ConfirmationToken;
 import net.chiheb.eventmanagment.Repository.ConfirmationTokenRepository;
 import net.chiheb.eventmanagment.Repository.EventParticipantRepository;
@@ -23,12 +24,14 @@ import java.util.UUID;
 public class EmailService {
     private JavaMailSender javaMailSender;
     private ConfirmationTokenRepository confirmationTokenRepository;
+    private LisAttenteService listeAttenteService;
     private EventParticipantRepository eventParticipantRepository;
     private final static Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    public EmailService(JavaMailSender javaMailSender, ConfirmationTokenRepository confirmationTokenRepository, EventParticipantRepository eventParticipantRepository) {
+    public EmailService(JavaMailSender javaMailSender, ConfirmationTokenRepository confirmationTokenRepository, LisAttenteService listeAttenteService, EventParticipantRepository eventParticipantRepository) {
         this.javaMailSender = javaMailSender;
         this.confirmationTokenRepository = confirmationTokenRepository;
+        this.listeAttenteService = listeAttenteService;
         this.eventParticipantRepository = eventParticipantRepository;
     }
 
@@ -88,8 +91,8 @@ public class EmailService {
         }
 
         LocalDateTime expiresAt = confirmToken.getExpiresAt();
-
         if (expiresAt.isBefore(LocalDateTime.now())) {
+
             throw new IllegalStateException("Token is already expired!");
         }
         EventParticipant eventParticipant = confirmToken.getEventParticipant();

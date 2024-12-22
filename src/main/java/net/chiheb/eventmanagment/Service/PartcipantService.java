@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PartcipantService {
@@ -46,13 +47,20 @@ public class PartcipantService {
 
     }
     public Participant updatePartcipant(ParticipantDto participant , Long id){
+        System.out.println(participant.toString());
         Participant participant1 =getParticipantById(id);
-        if (!checkIfEmailExists(participant.email())) {
-            participant1.setAddrese(participant.addrese());
-            participant1.setEmail(participant.email());
-            participant1.setName(participant.name());
-            return partcipantRepository.saveAndFlush(participant1);
-        }else throw new EmailAleadyExists("Email aleardy exists");
+        if(!Objects.equals(participant.email(), participant1.getEmail())){
+            if(checkIfEmailExists(participant.email())){
+                throw new EmailAleadyExists("Email aleardy exists");
+            }
+        }
+        participant1.setAddrese(participant.addrese());
+        participant1.setEmail(participant.email());
+        participant1.setName(participant.name());
+        Participant participant2 = partcipantRepository.saveAndFlush(participant1);
+        System.out.println(participant2.getEmail() + participant2.getName() + participant2.getAddrese()) ;
+        return participant2;
+
     }
     public boolean checkIfEmailExists(String email) {
         Participant participantByEmail = partcipantRepository.findParticipantByEmail(email);

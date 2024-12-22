@@ -22,4 +22,7 @@ public class LisAttenteService {
         listeAttente.setPosition(listAttentesRepository.getMaxPosition(event.getEventid()));
         listAttentesRepository.save(listeAttente);
     }
+    public Long getFirstparticpantonWitingList(Long eventid){
+        return  listAttentesRepository.getFirstPartcipantInWaitingList(eventid);
+    }
 }
