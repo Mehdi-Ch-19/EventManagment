@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment.Controller;
 
 import net.chiheb.eventmanagment.Dto.*;
+import net.chiheb.eventmanagment.Dto.mapper.EventMapper;
 import net.chiheb.eventmanagment.Dto.mapper.EventPartcipantMapper;
 import net.chiheb.eventmanagment.Entity.Event;
 import net.chiheb.eventmanagment.Entity.EventParticipant;
@@ -23,11 +24,13 @@ public class EventController {
     private EventPartcipantMapper eventPartcipantMapper;
     private EmailService emailService;
     private EventParticipantRepository eventParticipantRepository;
+    private EventMapper eventMapper;
 
-    public EventController(EventService eventService, EventPartcipantMapper eventPartcipantMapper, EmailService emailService) {
+    public EventController(EventService eventService, EventPartcipantMapper eventPartcipantMapper, EmailService emailService, EventMapper eventMapper) {
         this.eventService = eventService;
         this.eventPartcipantMapper = eventPartcipantMapper;
         this.emailService = emailService;
+        this.eventMapper = eventMapper;
     }
 
     @PostMapping("/{eventid}/enrolle")
@@ -51,12 +54,21 @@ public class EventController {
         List<EventDto> events = eventService.getallevents();
         return ResponceHandler.generateResponse("all the events", HttpStatus.OK , events);
     }
+    @GetMapping("/{eventid}")
+    public ResponseEntity<?> getEventById(@PathVariable Long eventid){
+        Event event = eventService.getEventById(eventid).get();
+        System.out.println("id = " + event.getCategory().getCategoryId() + "" +
+                "name"+event.getCategory().getCategoryName());
+        return ResponceHandler.generateResponse("Single Event",
+                HttpStatus.OK ,eventMapper.toDto(event));
+
+    }
 
 
     @GetMapping("/category")
     public ResponseEntity<?> getEventsByCategory(@RequestParam String type){
         List<EventDto> events = eventService.getAllEventsByCategory(type);
-        return ResponceHandler.generateResponse("all the events", HttpStatus.OK , events);
+        return ResponceHandler.generateResponse("all the events by Category", HttpStatus.OK , events);
     }
     @GetMapping("/upcoming")
     public ResponseEntity<?> getUpcomingEvents(){
@@ -74,7 +86,31 @@ public class EventController {
         }
 
     }
+    @GetMapping("/check")
+        public ResponseEntity<Boolean> checkIfPartcipantExistOnTheEvent(@RequestParam Long eventid,@RequestParam Long partcipantId){
+        return new ResponseEntity<>(eventService.checkifparticipantexistsonevent(eventid,partcipantId),HttpStatus.OK);
+        
+    }
+    @PutMapping("/update")
+    public ResponseEntity<?> updateEvent(@RequestBody EventDto eventDto){
+        try {
+            eventService.updateEvent(eventDto);
+            return ResponceHandler.generateResponse("updated succufuly", HttpStatus.OK , eventDto);
+        }catch (Exception e){
+            return ResponceHandler.generateResponse(e.getMessage(),HttpStatus.BAD_REQUEST,null);
 
+        }
+    }
+
+    @DeleteMapping("/{eventid}")
+    public ResponseEntity<?> deleteEvent(@PathVariable Long eventid){
+        try {
+            eventService.deleteEvent(eventid);
+            return ResponceHandler.generateResponse("event deleted successfuly",HttpStatus.OK,null);
+        }catch (Exception e){
+            return ResponceHandler.generateResponse(e.getMessage(),HttpStatus.BAD_REQUEST,null);
+        }
+    }
     @GetMapping(path = "/confirm")
     public String confirm(@RequestParam("token") String token) {
         try {

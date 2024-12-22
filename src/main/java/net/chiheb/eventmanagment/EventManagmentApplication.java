@@ -76,16 +76,16 @@ public class EventManagmentApplication {
             System.out.println(organizator1);
 
             EventCreationFrontDto event = new EventCreationFrontDto();
-            event.setTitle("mawazin");
+            event.setTitle("Mawazin");
             event.setCategoryid(category.getCategoryId());
             event.setOrganizatorid(organizator.getId());
             event.setDescription("20 eduthion du mazain");
             event.setLocation("Rabat hotel sofitel 21 ");
-            event.setEventStartTime(LocalDateTime.now().plusDays(5));
-            event.setEventEndTime(LocalDateTime.now().plusDays(8));
+            event.setEventStartTime(LocalDateTime.now().plusDays(3).plusHours(12));
+            event.setEventEndTime(LocalDateTime.now().plusDays(3).plusHours(18));
             event.setMaxCapacity(2);
-            event.setImageUrl("https://www.vfairs.com/wp-content/uploads/2024/09/powerful-speaker-session-in-a-event-Freepik.jpeg");
-            event.setDate(LocalDate.now());
+            event.setImageUrl("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/ee/54/fb/mawazine-festival.jpg?w=1200&h=-1&s=1");
+            event.setDate(LocalDate.now().plusDays(3));
             System.out.println(event.getEventStartTime());
             System.out.println(event.getEventEndTime());
             //organizator1.getEventSet().add(newevent);
@@ -100,17 +100,63 @@ public class EventManagmentApplication {
 
 
             EventCreationFrontDto event2 = new EventCreationFrontDto();
-            event2.setTitle("mawazin");
-            event2.setCategoryid(techcat.getCategoryId());
+            event2.setTitle("Education methodolgy with ai");
             event2.setOrganizatorid(organizator.getId());
-            event2.setDescription("20 eduthion du mazain");
-            event2.setLocation("Rabat hotel sofitel 21 ");
-            event2.setEventStartTime(LocalDateTime.now().plusDays(5));
-            event2.setEventEndTime(LocalDateTime.now().plusDays(8));
+            event2.setCategoryid(education.getCategoryId());
+            event2.setOrganizatorid(organizator.getId());
+            event2.setDescription("Using ai in education ");
+            event2.setLocation("Marrakech theatre avenu ibn khold");
+            event2.setEventStartTime(LocalDateTime.now().plusDays(5).plusHours(19));
+            event2.setEventEndTime(LocalDateTime.now().plusDays(20).plusHours(20));
             event2.setMaxCapacity(2);
-            event2.setImageUrl("https://www.vfairs.com/wp-content/uploads/2024/09/powerful-speaker-session-in-a-event-Freepik.jpeg");
-            event2.setDate(LocalDate.now());
+            event2.setImageUrl("https://images.ctfassets.net/x0wnv07j8mtt/ab8da628-fb41-5265-7b7a-3837d230ebb3/80878197369e64bbe06b97281b79f5f6/ab8da628-fb41-5265-7b7a-3837d230ebb3");
+            event2.setDate(LocalDate.now().plusDays(11));
              eventService.createEventFront(event2);
+
+
+
+            EventCreationFrontDto even = new EventCreationFrontDto();
+            even.setTitle("Tomorowlamd");
+            even.setOrganizatorid(organizator.getId());
+            even.setCategoryid(category.getCategoryId());
+            even.setOrganizatorid(organizator.getId());
+            even.setDescription("Edition 20 of Tomowoland");
+            even.setLocation("irlannd dublin");
+            even.setEventStartTime(LocalDateTime.now().plusDays(20).plusHours(12));
+            even.setEventEndTime(LocalDateTime.now().plusDays(20).plusHours(52));
+            even.setMaxCapacity(2);
+            even.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Tomorrowland2016mainstage.jpg/1200px-Tomorrowland2016mainstage.jpg");
+            even.setDate(LocalDate.now().plusDays(20));
+            eventService.createEventFront(even);
+
+            EventCreationFrontDto eve = new EventCreationFrontDto();
+            eve.setTitle("Angular Material Courde");
+            eve.setOrganizatorid(organizator.getId());
+            eve.setCategoryid(techcat.getCategoryId());
+            eve.setOrganizatorid(organizator.getId());
+            eve.setDescription("Angular worckshop in swiss");
+            eve.setLocation("Abu dahbi riad 25 ");
+            eve.setEventStartTime(LocalDateTime.now().plusDays(2).plusHours(12));
+            eve.setEventEndTime(LocalDateTime.now().plusDays(2).plusHours(15));
+            eve.setMaxCapacity(20);
+            eve.setImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFvBJUZLKtSOD7Obbec1I4x2JzTPpIYvpyppXJIKoQcxuGQKQO_GB9TOCjc6TOtxp11Z8&usqp=CAU");
+            eve.setDate(LocalDate.now().plusDays(2));
+            eventService.createEventFront(eve);
+
+            EventCreationFrontDto ev = new EventCreationFrontDto();
+            ev.setTitle("Medical Event ");
+            ev.setOrganizatorid(organizator.getId());
+            ev.setCategoryid(medecine.getCategoryId());
+            ev.setOrganizatorid(organizator.getId());
+            ev.setDescription("New method for curing diabities");
+            ev.setLocation("Uit ibn tofel fs science ");
+            ev.setEventStartTime(LocalDateTime.now().plusDays(10).plusHours(8));
+            ev.setEventEndTime(LocalDateTime.now().plusDays(10).plusHours(11));
+            ev.setMaxCapacity(20);
+            ev.setImageUrl("https://within3.com/wp-content/uploads/2022/06/W3_02.04.22_PurposeofMedConferences.jpg");
+            ev.setDate(LocalDate.now().plusDays(10));
+            eventService.createEventFront(ev);
+
         };
     }
     public static void main(String[] args) {

@@ -15,12 +15,10 @@ public interface EventMapper {
     EventMapper mapper = Mappers.getMapper(EventMapper.class);
     @Mapping(source = "eventStartTime", target = "EventStartTime")
     @Mapping(source = "eventEndTime",target = "EventEndTime")
+    @Mapping(source = "maxCapacity",target = "MaxCapacity")
     EventDto toDto(Event event);
 
-    @Mapping(source = "eventStartTime", target = "eventStartTime")
-    @Mapping(source = "eventEndTime",target = "eventEndTime")
-    @Mapping( target = "numOfPartcipant",ignore = true)
-    EventsOrganizatorDto toEventsOrganizatorDto(Event event);
+
 
 
 

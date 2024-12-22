@@ -44,6 +44,7 @@ public class ParticipantController {
             return ResponceHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST,null);
         }
     }
+
     @GetMapping("/{participantid}")
     public  ResponseEntity<?> getParticipantInfo(@PathVariable("participantid") Long id){
         Participant participant = partcipantService.getParticipantById(id);

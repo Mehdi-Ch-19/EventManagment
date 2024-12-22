@@ -40,5 +40,8 @@ public class CategoryService {
         Category category = categoryRepository.findByCategoryId(cat.getCategoryId());
         return category.getEvents();
     }
+    public List<Category> getAllCategory(){
+        return categoryRepository.findAll();
+    }
 
 }

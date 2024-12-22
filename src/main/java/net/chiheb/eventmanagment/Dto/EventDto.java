@@ -3,6 +3,7 @@ package net.chiheb.eventmanagment.Dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import net.chiheb.eventmanagment.Entity.Category;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public record EventDto(
         @Temporal(TemporalType.TIMESTAMP)
          LocalDateTime EventEndTime,
          String location,
-         String imageUrl
+         String imageUrl,
+        int MaxCapacity,
+        Category category
 ) {
 }

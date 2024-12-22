@@ -1,9 +1,6 @@
 package net.chiheb.eventmanagment.Service;
 
-import net.chiheb.eventmanagment.Dto.EventCreationDto;
-import net.chiheb.eventmanagment.Dto.EventCreationFrontDto;
-import net.chiheb.eventmanagment.Dto.EventDto;
-import net.chiheb.eventmanagment.Dto.ParticipantEventEnrolDto;
+import net.chiheb.eventmanagment.Dto.*;
 import net.chiheb.eventmanagment.Dto.mapper.EventMapper;
 import net.chiheb.eventmanagment.Dto.mapper.EventPartcipantMapper;
 import net.chiheb.eventmanagment.Entity.*;
@@ -110,7 +107,7 @@ public class EventService {
         Event event = getEventById(eventid).get();
         Participant participant1 = partcipantService.getParticipantById(participant.getParticipantId());
         if(checkifcapacityenough(event)){
-            if(checkifparticipantexistsonevent(event,participant1)){
+            if(checkifparticipantexistsonevent(eventid, participant1.getId())){
                 System.out.println("Participant already exists");
                 throw new AleardyEnrolled("aleady enrollred");
             }else {
@@ -149,11 +146,30 @@ public class EventService {
             throw new CapacityNotEnoughExeption("Capacity not enough");
         }
     }
+    public EventDto updateEvent(EventDto eventDto){
+
+         Event event = getEventById(eventDto.eventid()).get();
+         event.setEventid(eventDto.eventid());
+         event.setDate(eventDto.date());
+         event.setEventEndTime(eventDto.EventEndTime());
+         event.setEventStartTime(eventDto.EventStartTime());
+         event.setCategory(eventDto.category());
+         event.setMaxCapacity(eventDto.MaxCapacity());
+         event.setLocation(eventDto.location());
+         event.setImageUrl(eventDto.imageUrl());
+         event.setTitle(eventDto.title());
+         event.setDescription(eventDto.description());
+         eventRepository.saveAndFlush(event);
+         return eventDto;
+    }
 
     // check if user is already enroled
-    public boolean checkifparticipantexistsonevent(Event event , Participant participant){
+    public boolean checkifparticipantexistsonevent(Long eventid , Long participantid){
+        Event event = getEventById(eventid).get();
+        Participant participant1 = partcipantService.getParticipantById(participantid);
+
         EventParticipant eventParticipant = eventParticipantRepository.
-                findEventParticipantByEventAndParticipant(event,participant);
+                findEventParticipantByEventAndParticipant(event,participant1);
         if (eventParticipant == null){
             return false;
         }else return true;
@@ -175,9 +191,9 @@ public class EventService {
     public List<Event> getAllEventByOrganizator(Organizator organizator){
         return eventRepository.findAllByOrganizator(organizator);
     }
-    public void deleteEvent(Event event ){
+    public void deleteEvent(Long enventid ){
         try {
-            eventRepository.delete(event);
+            eventRepository.deleteById(enventid);
         }catch (Exception e){
             e.printStackTrace();
         }

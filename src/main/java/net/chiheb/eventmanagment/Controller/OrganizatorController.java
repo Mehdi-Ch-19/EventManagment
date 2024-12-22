@@ -53,6 +53,7 @@ public class OrganizatorController {
             eventsOrganizatorDto.setLocation( event.getLocation() );
             eventsOrganizatorDto.setImageUrl( event.getImageUrl() );
             eventsOrganizatorDto.setNumOfPartcipant(eventService.numOfParticipantInEvent(event.getEventid()));
+            eventsOrganizatorDto.setCategory(event.getCategory());
             eventsOrganizatorDtos.add(eventsOrganizatorDto);
         });
         return ResponceHandler.generateResponse("events list ", HttpStatus.OK, eventsOrganizatorDtos);

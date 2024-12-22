@@ -57,6 +57,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/v1/event/create")
                         .hasAnyRole("ORGANIZATOR")
+                        .requestMatchers("/api/v1/category").hasAnyRole("ORGANIZATOR")
                         .requestMatchers("/api/v1/event/confirm").permitAll()
                         .requestMatchers("api/v1/event/category").permitAll()
                         .anyRequest()
