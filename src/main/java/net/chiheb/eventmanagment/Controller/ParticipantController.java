@@ -1,6 +1,7 @@
 package net.chiheb.eventmanagment.Controller;
 
 
+import jakarta.validation.Valid;
 import net.chiheb.eventmanagment.Dto.ParticipantDto;
 import net.chiheb.eventmanagment.Dto.ParticipantEvents;
 import net.chiheb.eventmanagment.Dto.mapper.EventPartcipantMapper;
@@ -36,7 +37,7 @@ public class ParticipantController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerParticipant(@RequestBody Participant participant) {
+    public ResponseEntity<?> registerParticipant(@Valid @RequestBody Participant participant) {
         try {
             Participant participant1 = partcipantService.addParticipant(participant);
             return ResponceHandler.generateResponse("participant added successfuly ", HttpStatus.OK,participant1);
@@ -56,7 +57,7 @@ public class ParticipantController {
     }
     @PostMapping("/update/{participantid}")
     public ResponseEntity<?> updatePartcipant(@PathVariable("participantid") Long id ,
-                                              @RequestBody ParticipantDto participantDto){
+                                              @Valid @RequestBody ParticipantDto participantDto){
         try {
             Participant participant = partcipantService.updatePartcipant(participantDto, id);
             return ResponceHandler.generateResponse("participant updated ",
@@ -76,7 +77,6 @@ public class ParticipantController {
         List<ParticipantEvents> eventList = new ArrayList<>();
         events.stream().map(eventParticipant -> participantEventsMapper.toParticipantEvents(eventParticipant)).forEach(eventList::add);
         return ResponceHandler.generateResponse("events list ", HttpStatus.OK,
-                eventList.stream().sorted(Comparator.comparing(ParticipantEvents::purchaseat)
-                        .reversed()).toList());
+                eventList);
     }
 }

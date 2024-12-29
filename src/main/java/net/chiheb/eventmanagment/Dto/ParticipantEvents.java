@@ -12,7 +12,7 @@ public record ParticipantEvents(Event event , LocalDateTime purchaseat, boolean 
                         LocalDate date,
                         String location ,Category category ){
 
-        public record Category(String categoryName){
+        public record category(String categoryName){
 
         }
     }

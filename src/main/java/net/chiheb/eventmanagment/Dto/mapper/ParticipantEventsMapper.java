@@ -12,5 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface ParticipantEventsMapper {
     @Mapping(source = "purchaseat",target = "purchaseat",dateFormat = "yyyy-MM-dd HH:mm")
+    @Mapping(source = "confirmad",target = "isConfirmad")
     ParticipantEvents toParticipantEvents(EventParticipant eventParticipant);
 }

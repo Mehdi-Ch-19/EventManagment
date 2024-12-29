@@ -1,5 +1,6 @@
 package net.chiheb.eventmanagment.Controller;
 
+import jakarta.validation.Valid;
 import net.chiheb.eventmanagment.Dto.*;
 import net.chiheb.eventmanagment.Dto.mapper.EventMapper;
 import net.chiheb.eventmanagment.Dto.mapper.EventPartcipantMapper;
@@ -77,7 +78,7 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createEvent(@RequestBody EventCreationFrontDto event){
+    public ResponseEntity<?> createEvent(@Valid  @RequestBody EventCreationFrontDto event){
         try {
             Event event1 = eventService.createEventFront(event);
             return ResponceHandler.generateResponse("created succufuly", HttpStatus.OK , event1);
@@ -100,6 +101,11 @@ public class EventController {
             return ResponceHandler.generateResponse(e.getMessage(),HttpStatus.BAD_REQUEST,null);
 
         }
+    }
+    @GetMapping("/pages")
+    public ResponseEntity<?> getEventsBypPages( @RequestParam(defaultValue = "0") int pageNo,
+                                                @RequestParam(defaultValue = "10") int pageSize){
+        return ResponceHandler.generateResponse("all events by page",HttpStatus.OK,eventService.geteventspagable(pageNo,pageSize));
     }
 
     @DeleteMapping("/{eventid}")

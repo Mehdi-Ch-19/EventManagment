@@ -1,5 +1,6 @@
 package net.chiheb.eventmanagment.Controller;
 
+import jakarta.validation.Valid;
 import net.chiheb.eventmanagment.Dto.EventsOrganizatorDto;
 import net.chiheb.eventmanagment.Dto.mapper.EventMapper;
 import net.chiheb.eventmanagment.Entity.Event;
@@ -29,7 +30,7 @@ public class OrganizatorController {
         this.eventService = eventService;
     }
     @PostMapping
-    public ResponseEntity<?> registerOrganizator(@RequestBody Organizator organizator) {
+    public ResponseEntity<?> registerOrganizator( @Valid  @RequestBody Organizator organizator) {
         try {
             Organizator organizator1 = organizatorService.createOrganizator(organizator);
             return ResponceHandler.generateResponse("organizator added successfuly ", HttpStatus.OK,organizator1);

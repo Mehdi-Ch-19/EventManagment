@@ -48,10 +48,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto){
 
-        Authentication authentication =authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail()
-                        ,loginRequestDto.getPassword())
-        );
+
        /* User userDetails = (User) authentication.getPrincipal();
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
@@ -70,12 +67,23 @@ public class AuthController {
         return ResponceHandler.generateResponse("login successufuly", HttpStatus.OK,
                 loginResponceDto);
                 */
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        User userDetails = (User) authentication.getPrincipal();
-        return ResponceHandler.generateResponse("login successufuly", HttpStatus.OK,
-                new JwtResponce(jwt,userDetails.getId(),userDetails.getUsername(), userDetails.getEmail(), userDetails.getRole()));
-    }
+        try {
+            Authentication authentication =authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail()
+                            ,loginRequestDto.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+            User userDetails = (User) authentication.getPrincipal();
+            return ResponceHandler.generateResponse("login successufuly", HttpStatus.OK,
+                    new JwtResponce(jwt,userDetails.getId(),userDetails.getUsername(), userDetails.getEmail(), userDetails.getRole()));
+
+        }catch (Exception e){
+            return ResponceHandler.generateResponse("login not successufuly", HttpStatus.BAD_REQUEST,
+                    null);
+
+        }
+         }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto){
         try {

@@ -36,9 +36,9 @@ public class EventManagmentApplication {
             participant.setAddrese("Temara nassim 1 ");
 
             Participant participant2 = new Participant();
-            participant2.setEmail("elmahdichiheb19@gmail.com");
+            participant2.setEmail("elmahdi.chiheb@uit.ac.ma");
             participant2.setName("Kamal");
-            participant2.setPassword("x");
+            participant2.setPassword("x123456");
             participant2.setAddrese("Temara nassim 1 ");
 
             Participant participant3 = new Participant();

@@ -9,6 +9,9 @@ import net.chiheb.eventmanagment.Exeption.CapacityNotEnoughExeption;
 import net.chiheb.eventmanagment.Repository.EventParticipantRepository;
 import net.chiheb.eventmanagment.Repository.EventRepository;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,7 +138,7 @@ public class EventService {
                 /* Email sending */
                 String token = emailService.saveConfirmationToken(eventParticipant1);
                 String link = "http://localhost:8081/api/v1/event/confirm?token=" + token;
-                //emailService.sendEmail(participant1.getEmail(), buildEmail(participant1.getName(), link));
+                emailService.sendEmail(participant1.getEmail(), buildEmail(participant1.getName(), link));
                 return eventParticipant1;
                 //eventRepository.saveAndFlush(event);
             }
@@ -145,6 +148,10 @@ public class EventService {
             lisAttenteService.addParticipantToWaitingListofEvent(participant1,event);
             throw new CapacityNotEnoughExeption("Capacity not enough");
         }
+    }
+    public Page<Event> geteventspagable(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return eventRepository.findAll(pageable);
     }
     public EventDto updateEvent(EventDto eventDto){
 
